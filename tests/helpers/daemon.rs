@@ -97,6 +97,16 @@ impl Daemon {
 
         // TODO: Factor out putting files in the music directory.
         File::create(config.music_directory.join("empty.flac")).unwrap().write_all(EMPTY_FLAC_BYTES).unwrap();
+        create_dir(config.music_directory.join("dir")).unwrap();
+        File::create(config.music_directory.join("dir/blah1.flac")).unwrap().write_all(EMPTY_FLAC_BYTES).unwrap();
+        File::create(config.music_directory.join("dir/blah2.flac")).unwrap().write_all(EMPTY_FLAC_BYTES).unwrap();
+        let mut file = File::create(config.music_directory.join("playlist.m3u")).unwrap();
+        file.write_all(format!(r#"
+empty.flac
+dir/blah1.flac
+dir/blah2.flac
+        "#).as_bytes()).unwrap();
+        drop(file);
 
         let process = Command::new("mpd")
             .arg("--no-daemon")

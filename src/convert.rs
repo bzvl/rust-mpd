@@ -8,6 +8,7 @@ use proto::ToArguments;
 use song::{self, Id, Song};
 use std::collections::BTreeMap;
 use std::ops::{Range, RangeFrom, RangeFull, RangeTo};
+use entity::Entity;
 
 use time::Duration;
 
@@ -301,6 +302,12 @@ impl<'a, T: ToSongPath> ToSongPath for &'a T {
     }
 }
 
+impl<'a> ToSongPath for ::std::borrow::Cow<'a, str> {
+    fn to_path(&self) -> &str {
+        self.as_ref()
+    }
+}
+
 impl ToSongPath for AsRef<str> {
     fn to_path(&self) -> &str {
         self.as_ref()
@@ -312,5 +319,15 @@ impl<T: ToSongPath> ToArguments for T {
         where F: FnMut(&str) -> Result<(), E>
     {
         self.to_path().to_arguments(f)
+    }
+}
+
+impl ToSongPath for Entity {
+    fn to_path(&self) -> &str {
+        match self {
+            Entity::Directory(d) => d.name.as_ref(),
+            Entity::Playlist(p) => p.name.as_ref(),
+            Entity::File(f) => f.file.as_ref(),
+        }
     }
 }

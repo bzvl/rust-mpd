@@ -38,6 +38,8 @@ extern crate bufstream;
 
 mod macros;
 mod convert;
+pub mod directory;
+pub mod entity;
 pub mod error;
 pub mod version;
 pub mod reply;
@@ -65,6 +67,7 @@ pub use playlist::Playlist;
 pub use plugin::Plugin;
 pub use search::{Query, Term};
 pub use song::{Id, Song};
+pub use entity::Entity;
 pub use stats::Stats;
 pub use status::{ReplayGain, State, Status};
 pub use version::Version;

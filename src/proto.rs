@@ -20,7 +20,8 @@ impl<I> Iterator for Pairs<I>
     type Item = Result<(String, String)>;
     fn next(&mut self) -> Option<Result<(String, String)>> {
         let reply: Option<Result<Reply>> =
-            self.0.next().map(|v| v.map_err(Error::Io).and_then(|s| s.parse::<Reply>().map_err(Error::Parse)));
+            self.0.next().map(|v| v.map_err(Error::Io).and_then(|s| {
+                s.parse::<Reply>().map_err(Error::Parse)}));
         match reply {
             Some(Ok(Reply::Pair(a, b))) => Some(Ok((a, b))),
             None |

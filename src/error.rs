@@ -372,6 +372,8 @@ pub enum ProtoError {
     NoField(&'static str),
     /// expected sticker value, but didn't find it
     BadSticker,
+    /// expected a valid entity, but didn't find it
+    BadEntity
 }
 
 impl fmt::Display for ProtoError {
@@ -388,6 +390,7 @@ impl StdError for ProtoError {
             ProtoError::BadBanner => "banner error",
             ProtoError::NoField(_) => "missing field",
             ProtoError::BadSticker => "sticker error",
+            ProtoError::BadEntity => "invalid entity",
         }
     }
 }
